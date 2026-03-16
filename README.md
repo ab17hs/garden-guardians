@@ -21,7 +21,8 @@ The main goal of this prototype is to establish and test the fundamental gamepla
 
 You can view the demonstration video here:
 
-https://youtu.be/ONi_ob_3ONQ
+[https://youtu.be/VWH5S40hhas
+](https://www.youtube.com/watch?v=ONi_ob_3ONQ)
 The video demonstrates the enemy pathing system where enemies move along the path and disappear when they reach the endpoint.
 
 ---
@@ -55,15 +56,105 @@ The project was organised using a simple backlog system to prioritise developmen
 
 | Task | Description | Priority | Status |
 |-----|-------------|----------|-------|
-Create Unity project | Set up the initial Unity environment and project structure | High | Complete |
-Create path tiles | Build a simple path using tiles to represent the level layout | High | Complete |
-Create enemy objects | Add red spheres to represent enemy characters | High | Complete |
-Create endpoint object | Add a green sphere as the target location | High | Complete |
-Implement enemy movement | Develop a script that moves enemies toward the endpoint | High | Complete |
-Test enemy behaviour | Verify enemies move correctly and reach the endpoint | High | Complete |
-Fix physics issues | Adjust Rigidbody settings to stop enemies falling | Medium | Complete |
-Record demo video | Demonstrate prototype behaviour | Medium | Complete |
-Implement towers | Add defensive towers to attack enemies | Medium | Planned |
+| Create Unity project | Set up the initial Unity environment and project structure | High | Complete |
+| Create path tiles | Build a simple path using tiles to represent the level layout | High | Complete |
+| Create enemy objects | Add red spheres to represent enemy characters | High | Complete |
+| Create endpoint object | Add a green sphere as the target location | High | Complete |
+| Implement enemy movement | Develop a script that moves enemies toward the endpoint | High | Complete |
+| Test enemy behaviour | Verify enemies move correctly and reach the endpoint | High | Complete |
+| Fix physics issues | Adjust Rigidbody settings to stop enemies falling | Medium | Complete |
+| Record demo video | Demonstrate prototype behaviour | Medium | Complete |
+| Implement towers | Add defensive towers to attack enemies | Medium | Planned |
+
+---
+
+# Design Documentation
+
+## Game Flow Diagram
+
+The basic gameplay flow of the prototype can be represented as the following process:
+
+```
+Start Game
+    |
+Spawn Enemy
+    |
+Enemy Moves Along Path
+    |
+Reached Endpoint?
+   / \
+ Yes  No
+  |    |
+Remove Enemy
+  |
+Spawn Next Enemy
+```
+
+This flow shows the main logic implemented in the prototype. In later versions this would expand to include tower attacks, enemy waves and player health.
+
+---
+
+## Enemy Movement Pseudocode
+
+The movement behaviour of enemies can be described with the following pseudocode:
+
+```
+Start
+
+Set target position to endpoint
+
+While enemy exists in the scene
+    Move enemy towards the target position
+    
+    If enemy reaches the endpoint
+        Destroy enemy object
+    End If
+
+End While
+
+End
+```
+
+This logic forms the core gameplay mechanic that allows enemies to navigate the level.
+
+---
+
+## Screen Design
+
+The prototype currently uses a simple layout designed for testing gameplay mechanics.
+
+Main Screen Elements:
+
+- **Path Tiles** – Define the route enemies follow
+- **Enemy Objects** – Represented by red spheres
+- **Endpoint Object** – Represented by a green sphere
+- **Game Camera** – Displays the level and enemy movement
+
+Future versions of the game will likely include additional interface elements such as:
+
+- Player health display
+- Resource or score indicators
+- Tower placement controls
+- Wave counters
+
+---
+
+## Concept Artwork and Visual Direction
+
+At this stage the game uses placeholder assets (spheres and tiles) to represent game elements. These allow gameplay mechanics to be tested before detailed art assets are created.
+
+Planned visual ideas include:
+
+**Enemies**  
+Small creature-like characters attempting to invade the garden.
+
+**Towers**  
+Plant-based defensive towers such as flower cannons or vine traps.
+
+**Environment**  
+A colourful garden environment with grass, flowers and winding paths.
+
+The visual direction is intended to be bright and accessible, with clear visual feedback so players can easily understand what is happening in the game.
 
 ---
 
@@ -87,11 +178,11 @@ The environment is intentionally simple so that the focus remains on testing cor
 
 ## Characters
 
-Enemies are represented by red spheres. These act as placeholder objects which demonstrate enemy movement behaviour.
+Enemies are represented by red spheres which act as placeholder characters.
 
 The endpoint is represented by a green sphere which acts as the destination that enemies attempt to reach.
 
-These placeholder assets allow the gameplay systems to be tested before adding detailed character models or artwork.
+These placeholder assets allow gameplay systems to be tested before adding detailed character models or artwork.
 
 ---
 
@@ -99,12 +190,12 @@ These placeholder assets allow the gameplay systems to be tested before adding d
 
 The gameplay loop for the prototype is currently simple:
 
-1. The game begins and enemies appear in the scene.
-2. Enemies move along the defined path.
-3. Enemies reach the endpoint.
-4. The enemy object is removed from the scene.
+1. The game begins and enemies appear in the scene
+2. Enemies move along the defined path
+3. Enemies reach the endpoint
+4. The enemy object is removed from the scene
 
-In a full implementation this loop would be expanded with towers, enemy waves, player resources and increasing difficulty.
+In a full implementation this loop would expand to include towers, enemy waves, player resources and increasing difficulty.
 
 ---
 
@@ -134,34 +225,34 @@ Development followed a simplified Scrum-style workflow where tasks were divided 
 - Implement enemy objects
 
 **Problems Encountered**
-- Adjusting object positions and understanding the Unity interface.
+- Adjusting object positions and learning the Unity interface
 
 ---
 
 ## Development Session 2
 
 **Completed Tasks**
-- Implemented the enemy movement script.
+- Implemented the enemy movement script
 
 **Next Steps**
-- Test enemy interaction with the endpoint.
+- Test enemy interaction with the endpoint
 
 **Problems Encountered**
-- Enemies were falling due to gravity settings.
+- Enemies were falling due to gravity settings
 
 ---
 
 ## Development Session 3
 
 **Completed Tasks**
-- Fixed Rigidbody physics settings.
-- Confirmed enemies move correctly toward the endpoint.
+- Fixed Rigidbody physics settings
+- Confirmed enemies move correctly toward the endpoint
 
 **Next Steps**
-- Record the demo video and finalise documentation.
+- Record the demo video and finalise documentation
 
 **Problems Encountered**
-- Configuring Rigidbody constraints so enemies remained on the path.
+- Configuring Rigidbody constraints so enemies remained on the path
 
 ---
 
@@ -169,11 +260,11 @@ Development followed a simplified Scrum-style workflow where tasks were divided 
 
 The following tools were used during development:
 
-- **Unity** – Game engine used to build the prototype
-- **C#** – Programming language used for scripting
-- **Visual Studio Code** – Code editor used for development
-- **Git** – Version control system
-- **GitHub** – Repository hosting and documentation
+- **Unity** – Game engine used to build the prototype  
+- **C#** – Programming language used for scripting  
+- **Visual Studio Code** – Code editor used for development  
+- **Git** – Version control system  
+- **GitHub** – Repository hosting and documentation  
 - **YouTube** – Hosting the project demo video
 
 These tools supported both the technical development and documentation of the project.
@@ -217,6 +308,6 @@ These features would transform the prototype into a more complete tower defence 
 
 # Conclusion
 
-The Garden Guardians prototype successfully demonstrates the core mechanics of enemy pathing within a tower defence game. Enemies move along a defined path toward an endpoint and are removed from the scene once they arrive.
+The Garden Guardians prototype successfully demonstrates the core mechanics required for a tower defence game. The enemy movement system and endpoint interaction form the foundation for future gameplay features.
 
-Although the current version is intentionally simple, it provides the foundation for a larger tower defence system that could include towers, waves, and more complex gameplay mechanics in future development.
+Although the current version is intentionally simple, it establishes the key systems needed for a more complete tower defence experience in future development sprints.
