@@ -21,8 +21,7 @@ The main goal of this prototype is to establish and test the fundamental gamepla
 
 You can view the demonstration video here:
 
-https://youtu.be/VWH5S40hhas
-
+https://youtu.be/ONi_ob_3ONQ
 The video demonstrates the enemy pathing system where enemies move along the path and disappear when they reach the endpoint.
 
 ---
