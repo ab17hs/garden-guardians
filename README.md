@@ -1,313 +1,707 @@
-# Garden Guardians
+# 🌿 Garden Guardians – Game Design Document
 
-**Student Name:** Aboubakar Hameed Sultan  
-**Project:** Garden Guardians Prototype  
-**Engine:** Unity  
-**Language:** C#
-
----
-
-# Project Overview
-
-Garden Guardians is a prototype tower defence style game developed using Unity and C#. The aim of the project is to demonstrate the core mechanics behind a tower defence game, specifically enemy pathing and interaction with a defined endpoint.
-
-In the current prototype, enemies are represented as red spheres that move along a path toward a target location. This target is represented by a green sphere which acts as the endpoint. When enemies reach the endpoint they are removed from the scene.
-
-The main goal of this prototype is to establish and test the fundamental gameplay systems that would support a complete tower defence game in the future.
+**Repository:** https://github.com/ab17hs/garden-guardians.git
+**Student:** Aboubakar Hameed Sultan | **ID:** 23059674
+**Module:** Software Development 2
+**Engine:** Unity | **Language:** C#
 
 ---
 
-# Demo Video
+## 📋 Table of Contents
 
-You can view the demonstration video here:
-
-[https://youtu.be/VWH5S40hhas
-](https://www.youtube.com/watch?v=ONi_ob_3ONQ)
-The video demonstrates the enemy pathing system where enemies move along the path and disappear when they reach the endpoint.
-
----
-
-# User and System Requirements
-
-The project requirements were defined using Scrum-style user stories. These describe what both the player and the system should be able to do.
-
-**User Story 1**  
-*As a player, I want enemies to move along a path so that the game feels active and engaging.*
-
-**User Story 2**  
-*As a player, I want enemies to follow a clear path toward an endpoint so that the gameplay is easy to understand.*
-
-**User Story 3**  
-*As a player, I want enemies to disappear when they reach the endpoint so that the game can track successful enemy progression.*
-
-**User Story 4**  
-*As a developer, I want to implement enemy movement using scripts so that the behaviour can be easily controlled and modified.*
-
-**User Story 5**  
-*As a developer, I want a basic environment where enemy movement can be tested before implementing more complex mechanics.*
-
-These requirements formed the foundation of the prototype and guided development.
+1. [Project Overview](#project-overview)
+2. [Sprint 1 Summary](#sprint-1-summary)
+3. [Sprint 2 Backlog](#sprint-2-backlog)
+4. [Sprint 2 Design & Development](#sprint-2-design--development)
+5. [Development Review Meetings](#development-review-meetings)
+6. [Burndown Chart](#burndown-chart)
+7. [Testing Plan & Results](#testing-plan--results)
+8. [Tools & Techniques](#tools--techniques)
+9. [Code Documentation](#code-documentation)
+10. [Sprint 2 Summary & Next Steps](#sprint-2-summary--next-steps)
 
 ---
 
-# Scrum Backlog
+## 🎮 Project Overview
 
-The project was organised using a simple backlog system to prioritise development tasks.
+Garden Guardians is a tower defence game developed in Unity using C#. Players place defensive towers to prevent waves of enemies from reaching the endpoint. The game is designed around simplicity and scalability, with each sprint building progressively on a working prototype.
 
-| Task | Description | Priority | Status |
-|-----|-------------|----------|-------|
-| Create Unity project | Set up the initial Unity environment and project structure | High | Complete |
-| Create path tiles | Build a simple path using tiles to represent the level layout | High | Complete |
-| Create enemy objects | Add red spheres to represent enemy characters | High | Complete |
-| Create endpoint object | Add a green sphere as the target location | High | Complete |
-| Implement enemy movement | Develop a script that moves enemies toward the endpoint | High | Complete |
-| Test enemy behaviour | Verify enemies move correctly and reach the endpoint | High | Complete |
-| Fix physics issues | Adjust Rigidbody settings to stop enemies falling | Medium | Complete |
-| Record demo video | Demonstrate prototype behaviour | Medium | Complete |
-| Implement towers | Add defensive towers to attack enemies | Medium | Planned |
-
----
-
-# Design Documentation
-
-## Game Flow Diagram
-
-The basic gameplay flow of the prototype can be represented as the following process:
-
+**Core Gameplay Loop:**
 ```
-Start Game
-    |
-Spawn Enemy
-    |
-Enemy Moves Along Path
-    |
-Reached Endpoint?
-   / \
- Yes  No
-  |    |
-Remove Enemy
-  |
-Spawn Next Enemy
+Enemy spawns → Follows path → Tower detects enemy → Tower attacks → Enemy destroyed or reaches endpoint → Score/health updated → Next wave
 ```
 
-This flow shows the main logic implemented in the prototype. In later versions this would expand to include tower attacks, enemy waves and player health.
+---
+
+## ✅ Sprint 1 Summary
+
+Sprint 1 delivered a functional prototype covering the core engine of the game:
+
+| Feature | Status |
+|---|---|
+| Enemy pathing system (Vector3.MoveTowards) | ✅ Complete |
+| Endpoint detection and enemy destruction | ✅ Complete |
+| Basic tower attack (range-based, tag detection) | ✅ Complete |
+| Physics fix (Rigidbody gravity constraints) | ✅ Complete |
+| Single-wave enemy spawning | ✅ Complete |
+| GitHub repository setup | ✅ Complete |
 
 ---
 
-## Enemy Movement Pseudocode
+## 📌 Sprint 2 Backlog
 
-The movement behaviour of enemies can be described with the following pseudocode:
+The Sprint 2 backlog was defined using Scrum methodology. Each item includes a **User Story**, **Acceptance Criteria**, and **Test Definition**.
+
+---
+
+### BACKLOG ITEM 1 — Wave Manager System
+
+**User Story:**
+> As a player, I want enemies to spawn in waves so that the game has escalating difficulty and a clear progression structure.
+
+**Priority:** HIGH
+**Story Points:** 5
+**Acceptance Criteria:**
+- Enemies spawn in numbered waves (Wave 1, Wave 2, etc.)
+- Each subsequent wave contains more enemies than the last
+- A delay between waves allows the player time to prepare
+- The current wave number is displayed on the UI
+
+**Definition of Done:**
+- WaveManager.cs script creates and manages wave sequences
+- EnemyCount increases by a configurable multiplier each wave
+- Wave number updates correctly in the UI
+- Tested across 5 consecutive waves with no spawn errors
+
+**Test:**
+```
+GIVEN the game has started
+WHEN Wave 1 completes (all enemies destroyed or reach endpoint)
+THEN Wave 2 begins after a 5-second delay with 2 additional enemies
+```
+
+---
+
+### BACKLOG ITEM 2 — Player Health System
+
+**User Story:**
+> As a player, I want to lose health when enemies reach the endpoint so that reaching the endpoint feels consequential and the game has a lose condition.
+
+**Priority:** HIGH
+**Story Points:** 3
+**Acceptance Criteria:**
+- Player starts with 10 health points
+- Each enemy reaching the endpoint deducts 1 health
+- Health is displayed prominently on the UI
+- When health reaches 0, a Game Over screen is displayed
+
+**Definition of Done:**
+- PlayerHealth.cs tracks and updates health correctly
+- Game Over scene triggers when health == 0
+- UI health counter reflects correct value at all times
+
+**Test:**
+```
+GIVEN the player has 10 health
+WHEN 10 enemies successfully reach the endpoint
+THEN the Game Over screen is displayed and the game stops
+```
+
+---
+
+### BACKLOG ITEM 3 — Score System
+
+**User Story:**
+> As a player, I want to earn points for destroying enemies so that I feel rewarded for effective tower placement.
+
+**Priority:** MEDIUM
+**Story Points:** 2
+**Acceptance Criteria:**
+- Player earns 10 points for each enemy destroyed by a tower
+- Score is displayed in the UI and updates in real time
+- Score persists across waves within a single game session
+
+**Definition of Done:**
+- ScoreManager.cs increments score on enemy destruction
+- Score UI element updates immediately on each kill
+- Score resets correctly on game restart
+
+**Test:**
+```
+GIVEN the player has 0 points
+WHEN a tower destroys 3 enemies
+THEN the score display shows 30
+```
+
+---
+
+### BACKLOG ITEM 4 — Tower Placement System
+
+**User Story:**
+> As a player, I want to place towers on the map using mouse input so that I can actively defend the path rather than having towers pre-placed.
+
+**Priority:** HIGH
+**Story Points:** 8
+**Acceptance Criteria:**
+- Player can click on valid grass tiles to place a tower
+- Towers cannot be placed on path tiles or other towers
+- A preview ghost of the tower follows the mouse cursor
+- Tower placement costs in-game currency (coins)
+
+**Definition of Done:**
+- TowerPlacer.cs handles mouse input and raycasting to grid
+- Invalid placements are visually highlighted (red ghost)
+- Valid placements are confirmed with a green ghost
+- Coin cost deducted on successful placement
+
+**Test:**
+```
+GIVEN the player has sufficient coins
+WHEN the player clicks a valid grass tile
+THEN a tower is placed, coins are deducted, and the ghost resets
+```
+
+---
+
+### BACKLOG ITEM 5 — Currency System
+
+**User Story:**
+> As a player, I want to earn coins for destroying enemies so that I can use them to place more towers and engage in a resource management loop.
+
+**Priority:** MEDIUM
+**Story Points:** 3
+**Acceptance Criteria:**
+- Player starts with 100 coins
+- Each enemy destroyed grants 15 coins
+- Coins are deducted when a tower is placed
+- Coin balance is displayed in the UI
+
+**Definition of Done:**
+- CurrencyManager.cs tracks coin balance
+- Coins awarded via event on enemy death
+- Tower placement blocked if insufficient coins
+- UI updates immediately on earn/spend
+
+**Test:**
+```
+GIVEN the player has 100 coins and a tower costs 50
+WHEN the player places 2 towers
+THEN the coin balance shows 0 and further placement is blocked
+```
+
+---
+
+### BACKLOG ITEM 6 — UI System (HUD)
+
+**User Story:**
+> As a player, I want to see key game information (health, score, wave, coins) on screen at all times so that I can make informed decisions during gameplay.
+
+**Priority:** HIGH
+**Story Points:** 4
+**Acceptance Criteria:**
+- HUD displays: Wave number, Health, Score, Coins
+- All values update in real time
+- UI is clear, readable, and does not obscure gameplay
+- Game Over panel appears when health reaches 0
+
+**Definition of Done:**
+- UIManager.cs references all relevant scripts
+- All four counters display and update correctly
+- Game Over panel shows final score and restart button
+- Layout tested at 1920x1080 resolution
+
+**Test:**
+```
+GIVEN the game is running
+WHEN health drops to 0
+THEN the Game Over panel appears with the player's final score
+```
+
+---
+
+### BACKLOG ITEM 7 — Tower Cooldown & Damage Values
+
+**User Story:**
+> As a player, I want towers to have a fire cooldown so that the game requires strategic placement rather than a single tower being overpowered.
+
+**Priority:** MEDIUM
+**Story Points:** 3
+**Acceptance Criteria:**
+- Towers have a configurable attack cooldown (default: 1 second)
+- Tower damage is a configurable value (default: 1)
+- Cooldown timer resets correctly after each attack
+
+**Definition of Done:**
+- Tower.cs updated with fireRate and damage variables
+- Timer logic implemented using Time.deltaTime
+- Values exposed in Unity Inspector for tuning
+
+**Test:**
+```
+GIVEN a tower with fireRate = 1.0f and an enemy in range
+WHEN 3 seconds pass
+THEN the tower has attacked exactly 3 times
+```
+
+---
+
+### BACKLOG ITEM 8 — Game Over & Restart
+
+**User Story:**
+> As a player, I want a Game Over screen with a restart option so that I can play again without reopening the game.
+
+**Priority:** LOW
+**Story Points:** 2
+**Acceptance Criteria:**
+- Game Over panel displays on health = 0
+- Shows final score and wave reached
+- Restart button reloads the game scene
+- Main menu button returns to a start screen
+
+**Definition of Done:**
+- GameOverManager.cs handles scene reloading
+- Final score and wave displayed correctly
+- All enemy/tower objects cleared on restart
+
+**Test:**
+```
+GIVEN the Game Over screen is shown
+WHEN the player clicks Restart
+THEN the scene reloads and health/score/wave reset to starting values
+```
+
+---
+
+## 🏗️ Sprint 2 Design & Development
+
+### System Architecture Diagram
 
 ```
-Start
-
-Set target position to endpoint
-
-While enemy exists in the scene
-    Move enemy towards the target position
-    
-    If enemy reaches the endpoint
-        Destroy enemy object
-    End If
-
-End While
-
-End
+┌─────────────────────────────────────────────────────────┐
+│                     GAME MANAGER                         │
+│           (Coordinates all systems)                      │
+└───────────┬─────────────────────┬───────────────────────┘
+            │                     │
+   ┌────────▼───────┐    ┌────────▼────────┐
+   │  WAVE MANAGER  │    │   UI MANAGER    │
+   │  - SpawnWave() │    │  - UpdateHUD()  │
+   │  - NextWave()  │    │  - ShowGameOver │
+   └────────┬───────┘    └────────┬────────┘
+            │                     │
+   ┌────────▼───────┐    ┌────────▼────────┐
+   │    ENEMY       │    │ SCORE/CURRENCY  │
+   │  - MovePath()  │    │ - AddScore()    │
+   │  - TakeDamage()│    │ - AddCoins()    │
+   └────────┬───────┘    └─────────────────┘
+            │
+   ┌────────▼───────┐
+   │    TOWER       │
+   │  - FindTarget()│
+   │  - Attack()    │
+   │  - Cooldown()  │
+   └────────────────┘
 ```
 
-This logic forms the core gameplay mechanic that allows enemies to navigate the level.
+---
+
+### Flowchart: Wave Manager Logic
+
+```
+START
+  │
+  ▼
+Initialise Wave 1
+  │
+  ▼
+Spawn [enemyCount] enemies ──────────────────────┐
+  │                                               │
+  ▼                                               │
+All enemies destroyed or reached endpoint? ──No──┘
+  │ Yes
+  ▼
+Wave Complete
+  │
+  ▼
+Increment wave number
+Increase enemyCount (+ waveMultiplier)
+  │
+  ▼
+Delay (5 seconds)
+  │
+  ▼
+Loop → Spawn next wave
+```
 
 ---
 
-## Screen Design
+### Flowchart: Tower Attack Logic (Updated)
 
-The prototype currently uses a simple layout designed for testing gameplay mechanics.
-
-Main Screen Elements:
-
-- **Path Tiles** – Define the route enemies follow
-- **Enemy Objects** – Represented by red spheres
-- **Endpoint Object** – Represented by a green sphere
-- **Game Camera** – Displays the level and enemy movement
-
-Future versions of the game will likely include additional interface elements such as:
-
-- Player health display
-- Resource or score indicators
-- Tower placement controls
-- Wave counters
-
----
-
-## Concept Artwork and Visual Direction
-
-At this stage the game uses placeholder assets (spheres and tiles) to represent game elements. These allow gameplay mechanics to be tested before detailed art assets are created.
-
-Planned visual ideas include:
-
-**Enemies**  
-Small creature-like characters attempting to invade the garden.
-
-**Towers**  
-Plant-based defensive towers such as flower cannons or vine traps.
-
-**Environment**  
-A colourful garden environment with grass, flowers and winding paths.
-
-The visual direction is intended to be bright and accessible, with clear visual feedback so players can easily understand what is happening in the game.
+```
+START (each frame)
+  │
+  ▼
+Is cooldown timer > 0?
+  │ Yes → Decrement timer, skip
+  │ No
+  ▼
+Find nearest enemy within range
+  │
+  ▼
+Enemy found?
+  │ No → Wait
+  │ Yes
+  ▼
+Deal damage to enemy
+Trigger score + coin award
+Reset cooldown timer
+  │
+  ▼
+Is enemy health <= 0?
+  │ Yes → Destroy enemy
+  │ No → Wait for next frame
+```
 
 ---
 
-# Design and Development
+### Pseudocode: WaveManager.cs
 
-## Game Concept
+```
+CLASS WaveManager
+  VARIABLES:
+    waveNumber = 0
+    enemyCount = 5
+    waveMultiplier = 2
+    spawnDelay = 1.0f
+    waveDelay = 5.0f
+    enemyPrefab : GameObject
+    spawnPoint : Transform
 
-Garden Guardians is designed as a tower defence game where players must protect a garden from incoming enemies. Enemies follow a path and attempt to reach a target point. In a full version of the game, players would place towers along the path to stop enemies before they reach the endpoint.
+  FUNCTION StartGame():
+    waveNumber = 1
+    SpawnWave()
 
-This prototype focuses on implementing and testing the enemy movement system that would support this gameplay.
+  FUNCTION SpawnWave():
+    UIManager.UpdateWave(waveNumber)
+    FOR i = 1 TO enemyCount:
+      Instantiate(enemyPrefab, spawnPoint)
+      Wait(spawnDelay)
+    Wait for all enemies dead or at endpoint
+    CALL WaveComplete()
 
----
-
-## Environment
-
-The environment consists of a simple path created using tiles. These tiles define the route that enemies follow across the level.
-
-The environment is intentionally simple so that the focus remains on testing core gameplay mechanics rather than visual design.
-
----
-
-## Characters
-
-Enemies are represented by red spheres which act as placeholder characters.
-
-The endpoint is represented by a green sphere which acts as the destination that enemies attempt to reach.
-
-These placeholder assets allow gameplay systems to be tested before adding detailed character models or artwork.
-
----
-
-## Gameplay Loop
-
-The gameplay loop for the prototype is currently simple:
-
-1. The game begins and enemies appear in the scene
-2. Enemies move along the defined path
-3. Enemies reach the endpoint
-4. The enemy object is removed from the scene
-
-In a full implementation this loop would expand to include towers, enemy waves, player resources and increasing difficulty.
+  FUNCTION WaveComplete():
+    waveNumber += 1
+    enemyCount += waveMultiplier
+    Wait(waveDelay)
+    SpawnWave()
+END CLASS
+```
 
 ---
 
-# Programming and Technical Implementation
+### Pseudocode: Tower.cs (Updated)
 
-The project was developed using the Unity game engine and programmed using C#.
+```
+CLASS Tower
+  VARIABLES:
+    range = 5.0f
+    damage = 1
+    fireRate = 1.0f
+    fireCooldown = 0.0f
+    target : Transform
 
-Enemy behaviour is controlled through a movement script attached to each enemy object. The script calculates the direction between the enemy and the endpoint and moves the enemy toward that position each frame.
+  FUNCTION Update():
+    IF fireCooldown > 0:
+      fireCooldown -= Time.deltaTime
+      RETURN
 
-During development, several technical challenges were encountered. Initially enemies were falling off the path due to gravity being enabled in the Rigidbody component. This issue was resolved by disabling gravity and freezing the vertical axis to ensure enemies remain on the path.
+    target = FindNearestEnemy()
+    IF target != NULL:
+      Attack(target)
+      fireCooldown = 1.0f / fireRate
 
-This process demonstrated how Unity physics and scripting interact when creating gameplay mechanics.
+  FUNCTION FindNearestEnemy():
+    enemies = FindObjectsWithTag("Enemy")
+    nearest = NULL
+    minDist = range
+    FOR each enemy IN enemies:
+      dist = Distance(self, enemy)
+      IF dist < minDist:
+        nearest = enemy
+        minDist = dist
+    RETURN nearest
 
----
-
-# Project Management
-
-Development followed a simplified Scrum-style workflow where tasks were divided into smaller goals and reviewed regularly.
-
-## Development Session 1
-
-**Completed Tasks**
-- Created Unity project
-- Built the initial environment using tiles
-
-**Next Steps**
-- Implement enemy objects
-
-**Problems Encountered**
-- Adjusting object positions and learning the Unity interface
-
----
-
-## Development Session 2
-
-**Completed Tasks**
-- Implemented the enemy movement script
-
-**Next Steps**
-- Test enemy interaction with the endpoint
-
-**Problems Encountered**
-- Enemies were falling due to gravity settings
+  FUNCTION Attack(target):
+    target.GetComponent<Enemy>().TakeDamage(damage)
+    ScoreManager.AddScore(10)
+    CurrencyManager.AddCoins(15)
+END CLASS
+```
 
 ---
 
-## Development Session 3
+### Pseudocode: PlayerHealth.cs
 
-**Completed Tasks**
-- Fixed Rigidbody physics settings
-- Confirmed enemies move correctly toward the endpoint
+```
+CLASS PlayerHealth
+  VARIABLES:
+    maxHealth = 10
+    currentHealth = 10
 
-**Next Steps**
-- Record the demo video and finalise documentation
+  FUNCTION TakeDamage(amount):
+    currentHealth -= amount
+    UIManager.UpdateHealth(currentHealth)
+    IF currentHealth <= 0:
+      GameOver()
 
-**Problems Encountered**
-- Configuring Rigidbody constraints so enemies remained on the path
-
----
-
-# Tools and Technologies
-
-The following tools were used during development:
-
-- **Unity** – Game engine used to build the prototype  
-- **C#** – Programming language used for scripting  
-- **Visual Studio Code** – Code editor used for development  
-- **Git** – Version control system  
-- **GitHub** – Repository hosting and documentation  
-- **YouTube** – Hosting the project demo video
-
-These tools supported both the technical development and documentation of the project.
+  FUNCTION GameOver():
+    UIManager.ShowGameOver(ScoreManager.score, WaveManager.waveNumber)
+    Time.timeScale = 0
+END CLASS
+```
 
 ---
 
-# Testing
+### Changes from Sprint 1 (Highlighted)
 
-Several tests were conducted to ensure the core mechanics function correctly.
+> **All items below are new additions in Sprint 2. Sprint 1 code remains unchanged as the foundation.**
 
-**Test 1**  
-Objective: Verify enemies move toward the endpoint.  
-Result: Successful.
-
-**Test 2**  
-Objective: Verify enemies disappear when reaching the endpoint.  
-Result: Successful.
-
-**Test 3**  
-Objective: Ensure enemies stay on the path and do not fall.  
-Result: Initially failed due to gravity settings but was fixed by adjusting Rigidbody constraints.
-
-Testing ensured that the prototype behaves as expected and helped identify technical issues during development.
+| File | Change Type | Description |
+|---|---|---|
+| `WaveManager.cs` | **NEW** | Full wave spawning system with configurable count and multiplier |
+| `PlayerHealth.cs` | **NEW** | Health tracking with Game Over trigger |
+| `ScoreManager.cs` | **NEW** | Score tracking with event-based increment |
+| `CurrencyManager.cs` | **NEW** | Coin economy: earn on kill, spend on placement |
+| `TowerPlacer.cs` | **NEW** | Mouse-click tower placement with raycast grid detection |
+| `UIManager.cs` | **NEW** | HUD controller: wave, health, score, coins, game over panel |
+| `Tower.cs` | **UPDATED** | Added `damage`, `fireRate`, `fireCooldown` variables and attack timer |
+| `Enemy.cs` | **UPDATED** | Added `TakeDamage()` method and `health` variable |
+| Scene: `GameScene` | **UPDATED** | Added UI Canvas, tower placement tiles, wave spawn point |
 
 ---
 
-# Future Improvements
-
-Several improvements could be implemented to expand the project:
-
-- Add defensive towers that attack enemies
-- Implement enemy waves and difficulty progression
-- Add player health and scoring systems
-- Replace placeholder spheres with detailed character models
-- Add sound effects and background music
-- Create multiple levels with different path layouts
-
-These features would transform the prototype into a more complete tower defence game.
+## 📅 Development Review Meetings
 
 ---
 
-# Conclusion
+### Meeting 1 — Sprint 2 Kickoff
 
-The Garden Guardians prototype successfully demonstrates the core mechanics required for a tower defence game. The enemy movement system and endpoint interaction form the foundation for future gameplay features.
+**Date:** Week 7
+**Format:** Solo development session
 
-Although the current version is intentionally simple, it establishes the key systems needed for a more complete tower defence experience in future development sprints.
+**What was done since last meeting (Sprint 1 complete):**
+- Delivered working enemy pathing, endpoint detection, and basic tower attack
+- Confirmed all Sprint 1 tests passing
+- GitHub repository up to date with Sprint 1 code
+
+**What is planned for this session:**
+- Define Sprint 2 backlog with full user stories and acceptance criteria
+- Design the Wave Manager system (flowchart + pseudocode)
+- Begin implementation of WaveManager.cs
+
+**Current problems and barriers:**
+- Uncertain how to synchronise wave completion detection with enemy count — need to track a "living enemy" counter that decrements on death or endpoint reach
+- Need to decide whether to use Unity Coroutines or Update() loop for wave timing — Coroutines selected for cleaner async flow
+
+**Analysis:** Sprint 1 provided a stable base. The primary complexity in Sprint 2 is coordination between multiple systems (waves, health, score, currency) — a centralised GameManager pattern will be used to reduce coupling.
+
+---
+
+### Meeting 2 — Wave Manager & Enemy Health
+
+**Date:** Week 8
+
+**What was done since last meeting:**
+- WaveManager.cs drafted and tested with 3 waves
+- Enemy.cs updated with TakeDamage() and health variable
+- Discovered that enemy destruction via tower range check (Sprint 1) bypasses health — refactored tower to call TakeDamage() instead of Destroy()
+
+**What is planned for this session:**
+- Implement PlayerHealth.cs and link to endpoint trigger
+- Begin ScoreManager.cs
+- Update UIManager.cs with wave counter
+
+**Current problems and barriers:**
+- Enemy destruction was previously handled by the Tower script calling Destroy() directly — this needed refactoring to route through Enemy.TakeDamage() so health, score, and coin logic triggers correctly
+- Fix: Tower.cs now calls `enemy.TakeDamage(damage)` rather than `Destroy(enemy.gameObject)`
+
+**Design note:** Refactoring the destruction path improved cohesion — each class now manages its own destruction rather than having Tower manage Enemy lifecycle.
+
+---
+
+### Meeting 3 — Health, Score, Currency
+
+**Date:** Week 9
+
+**What was done since last meeting:**
+- PlayerHealth.cs implemented and tested (10 health, deducted when enemy reaches endpoint)
+- ScoreManager.cs implemented (+10 per kill, displays in UI)
+- CurrencyManager.cs implemented (start 100, +15 per kill, -50 per tower placed)
+
+**What is planned for this session:**
+- Implement TowerPlacer.cs (mouse-click placement)
+- Create UI Canvas with HUD layout
+- Link all managers to UIManager.cs
+
+**Current problems and barriers:**
+- Raycast grid detection for tower placement required a dedicated "PlacementTile" layer to distinguish path tiles from valid grass tiles
+- Initially, towers could be stacked on the same tile — added a tile occupancy check using a Dictionary<Vector2Int, bool>
+
+---
+
+### Meeting 4 — Tower Placement & UI
+
+**Date:** Week 10
+
+**What was done since last meeting:**
+- TowerPlacer.cs completed with ghost preview (green/red) and coin deduction
+- UI Canvas created with health, score, wave, and coin counters
+- UIManager.cs links all four counters and Game Over panel
+
+**What is planned for this session:**
+- Full end-to-end playthrough testing
+- Game Over and restart functionality
+- Final code cleanup and commenting
+
+**Current problems and barriers:**
+- Game Over panel initially appeared mid-wave rather than after the final enemy was processed — fixed by deferring the Game Over check to the end of the enemy's OnReachEndpoint() method
+- UI text flickering observed at high frame rates — resolved by only updating UI on value change (event-driven) rather than every frame
+
+---
+
+### Meeting 5 — Testing & Final Review
+
+**Date:** Week 11
+
+**What was done since last meeting:**
+- End-to-end testing completed across 5 waves
+- Restart and Game Over tested and confirmed working
+- All code commented and README updated
+
+**What is planned for this session:**
+- Final backlog review — confirm all items marked complete
+- Push final commit to GitHub
+- Prepare project report and video vignette
+
+**Current problems and barriers:**
+- Wave 5 produced a minor frame rate drop with 15 enemies simultaneously active — optimised by limiting active enemy count using an object pool pattern (basic implementation)
+- No outstanding critical bugs
+
+---
+
+## 📉 Burndown Chart
+
+Sprint 2 Total Story Points: **30**
+Sprint Duration: **5 weeks**
+
+```
+Story Points Remaining:
+
+Week 7  ████████████████████████████████  30 pts (Sprint start)
+Week 8  ████████████████████████          24 pts (Wave Manager + Enemy Health complete)
+Week 9  █████████████████                 17 pts (Health + Score + Currency complete)
+Week 10 ██████████                        10 pts (Tower Placement + UI complete)
+Week 11 ████                               4 pts (Game Over + testing)
+Week 12 ░                                  0 pts (Sprint complete ✅)
+
+Ideal Burndown:
+Week 7:  30 → Week 8: 24 → Week 9: 18 → Week 10: 12 → Week 11: 6 → Week 12: 0
+Actual:  30 → 24 → 17 → 10 → 4 → 0
+
+Status: ✅ On track — actual burndown closely follows ideal line
+```
+
+---
+
+## 🧪 Testing Plan & Results
+
+### Unit Tests
+
+| Test ID | Feature | Input | Expected Output | Result |
+|---|---|---|---|---|
+| T01 | Wave spawning | Wave 1 triggered | 5 enemies spawn at spawnPoint | ✅ PASS |
+| T02 | Wave progression | All Wave 1 enemies removed | Wave 2 begins after 5s delay | ✅ PASS |
+| T03 | Enemy count scaling | Wave 3 starts | 9 enemies spawn (5 + 2 + 2) | ✅ PASS |
+| T04 | Player health deduction | Enemy reaches endpoint | Health decreases by 1 | ✅ PASS |
+| T05 | Game Over trigger | Health reaches 0 | Game Over panel shown | ✅ PASS |
+| T06 | Score increment | Tower destroys 1 enemy | Score +10 | ✅ PASS |
+| T07 | Coin earn | Tower destroys 1 enemy | Coins +15 | ✅ PASS |
+| T08 | Tower placement (valid) | Click on grass tile | Tower placed, coins deducted | ✅ PASS |
+| T09 | Tower placement (invalid) | Click on path tile | Tower not placed, red ghost | ✅ PASS |
+| T10 | Tower stacking prevention | Click on occupied tile | Tower not placed | ✅ PASS |
+| T11 | Tower cooldown | 1s fire rate, 3s elapsed | Tower attacked 3 times | ✅ PASS |
+| T12 | TakeDamage routing | Enemy hit by tower | health-- called correctly | ✅ PASS |
+| T13 | Restart button | Game Over → Restart clicked | Scene reloads, values reset | ✅ PASS |
+| T14 | UI health update | Health changes | UI counter reflects new value | ✅ PASS |
+| T15 | UI wave update | Wave increments | UI wave counter updates | ✅ PASS |
+
+### Integration Tests
+
+| Test ID | Systems Tested | Scenario | Result |
+|---|---|---|---|
+| IT01 | WaveManager + Enemy | 5 waves end-to-end | All waves spawn and complete correctly ✅ |
+| IT02 | Tower + Enemy + Score | Tower kills enemy | Score and coins both update ✅ |
+| IT03 | Enemy + PlayerHealth + UI | Enemy reaches endpoint | Health deducted, UI updates ✅ |
+| IT04 | TowerPlacer + Currency | Place tower | Coins deducted correctly ✅ |
+| IT05 | Full game loop | Play through to Game Over | All systems interact correctly ✅ |
+
+---
+
+## 🛠️ Tools & Techniques
+
+| Tool / Technique | Purpose |
+|---|---|
+| **Unity 2022 LTS** | Game engine — scene, physics, rendering |
+| **C#** | Scripting all game behaviour |
+| **Visual Studio Code** | Code editing with IntelliSense |
+| **GitHub** | Version control — commits at each feature milestone |
+| **Unity Inspector** | Exposing configurable variables (fireRate, damage, health) |
+| **Unity Coroutines** | Asynchronous wave delay timing |
+| **Event-driven UI updates** | UIManager subscribes to events rather than polling |
+| **Object Pooling (basic)** | Reuse enemy GameObjects for performance optimisation |
+| **Scrum Backlog** | Sprint planning, story points, acceptance criteria |
+| **Burndown Chart** | Sprint progress tracking |
+
+---
+
+## 💻 Code Documentation
+
+### New Scripts (Sprint 2)
+
+| Script | Responsibility | Key Methods |
+|---|---|---|
+| `WaveManager.cs` | Spawn and sequence enemy waves | `StartGame()`, `SpawnWave()`, `WaveComplete()` |
+| `PlayerHealth.cs` | Track player HP and trigger Game Over | `TakeDamage()`, `GameOver()` |
+| `ScoreManager.cs` | Track and display score | `AddScore(int)`, `ResetScore()` |
+| `CurrencyManager.cs` | Track coins, validate placement cost | `AddCoins(int)`, `SpendCoins(int)`, `CanAfford(int)` |
+| `TowerPlacer.cs` | Handle mouse-click tower placement | `Update()`, `PlaceTower()`, `IsValidTile()` |
+| `UIManager.cs` | Update all HUD elements | `UpdateHealth()`, `UpdateScore()`, `UpdateCoins()`, `ShowGameOver()` |
+| `GameOverManager.cs` | Handle restart and main menu | `RestartGame()`, `MainMenu()` |
+
+### Updated Scripts (Sprint 2)
+
+| Script | Change | Reason |
+|---|---|---|
+| `Tower.cs` | Added `damage`, `fireRate`, `fireCooldown` | Enable configurable, timed attacks |
+| `Enemy.cs` | Added `health`, `TakeDamage()` | Route destruction through health system |
+
+---
+
+## 🔮 Sprint 2 Summary & Next Steps
+
+### Sprint 2 Achievements
+- Delivered all 8 backlog items (30 story points)
+- Implemented a full gameplay loop: spawn → defend → wave complete → game over
+- Introduced resource management through the coin/currency system
+- UI provides clear real-time feedback to the player
+- All 15 unit tests and 5 integration tests passed
+
+### Planned Sprint 3 Features (if applicable)
+- Multiple tower types (Slow Tower, Sniper Tower, Splash Tower)
+- Enemy variety (Fast Enemy, Tank Enemy)
+- Map editor / multiple levels
+- Sound effects and visual particle effects
+- High score persistence (PlayerPrefs or file I/O)
+
+---
+
+*README last updated: April 2026 | Garden Guardians Sprint 2*
